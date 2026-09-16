@@ -13,7 +13,7 @@ load_dotenv()
 console = Console()
 
 llm = init_chat_model(
-    "qwen/qwen3.6-27b",
+    "qwen/qwen3.8-27b",
     model_provider='groq',
     temperature=0.5
 )
@@ -82,10 +82,12 @@ Be helpful and clear in your responses. When editing files or creating directori
 
 agent = create_agent(
     model=llm,
-    tools=[list_directory, write_file, read_file, create_directory]
+    tools=[list_directory, write_file, read_file, create_directory],
+    system_prompt=system_prompt
+
 )
 
-user_input = "Create me a hello world flask app in the current directory"
+user_input =input("Enter your query: ") 
 messages = [{"role":"user", "content":user_input}]
 
 chunks = agent.stream({"messages": messages}, stream_mode='updates')
